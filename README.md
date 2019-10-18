@@ -1,6 +1,12 @@
+## used for seafile application keepalive to monitor the db status ##
+information can be found here
+https://manual-cn-origin.seafile.com/deploy_pro/ji-qun-bu-shu/ha_cluster
+
+
 ## Percona Clustercheck ##
 
 Script to make a proxy (ie HAProxy) capable of monitoring Percona XtraDB Cluster nodes properly.
+
 
 ## Usage ##
 Below is a sample configuration for HAProxy on the client. The point of this is that the application will be able to connect to localhost port 3307, so although we are using Percona XtraDB Cluster with several nodes, the application will see this as a single MySQL server running on localhost.
