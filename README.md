@@ -76,6 +76,8 @@ If you do not want to use the setup with xinetd, you can also execute `clusterch
 First, create a clustercheckuser that will be doing the checks.
 
     mysql> GRANT PROCESS ON *.* TO 'clustercheckuser'@'localhost' IDENTIFIED BY 'clustercheckpassword!'
+    ##not recommand in PROD but for test 
+    GRANT ALL PRIVILEGES ON *.* TO 'clustercheckuser'@'%' IDENTIFIED BY 'clustercheckpassword!' WITH GRANT OPTION;
 
 Then, you can execute the script. In case of a synced node:
 
