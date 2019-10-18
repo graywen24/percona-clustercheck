@@ -8,6 +8,8 @@
 # Documentation and download: https://github.com/olafz/percona-clustercheck
 #
 # Based on the original script from Unai Rodriguez
+# update db query 
+#GRANT ALL PRIVILEGES ON *.* TO 'clustercheckuser'@'%' IDENTIFIED BY 'clustercheckpassword!' WITH GRANT OPTION;
 #
 
 if [[ $1 == '-h' || $1 == '--help' ]];then
@@ -35,12 +37,13 @@ if [ -f /etc/sysconfig/clustercheck ]; then
         . /etc/sysconfig/clustercheck
 fi
 
-MYSQL_USERNAME="${MYSQL_USERNAME:=-clustercheckuser}"
+MYSQL_USERNAME="${MYSQL_USERNAME:=clustercheckuser}"
 MYSQL_PASSWORD="${MYSQL_PASSWORD-clustercheckpassword!}"
 AVAILABLE_WHEN_DONOR=${AVAILABLE_WHEN_DONOR:-0}
 ERR_FILE="${ERR_FILE:-/dev/null}"
 AVAILABLE_WHEN_READONLY=${AVAILABLE_WHEN_READONLY:-1}
 DEFAULTS_EXTRA_FILE=${DEFAULTS_EXTRA_FILE:-/etc/my.cnf}
+DBVIP=10.0.0.200  #my dbvip here
 
 #Timeout exists for instances where mysqld may be hung
 TIMEOUT=10
@@ -54,7 +57,7 @@ if [[ -n "$MYSQL_PASSWORD" ]]; then
 fi
 if [[ -r $DEFAULTS_EXTRA_FILE ]];then
     MYSQL_CMDLINE="mysql --defaults-extra-file=$DEFAULTS_EXTRA_FILE -nNE --connect-timeout=$TIMEOUT \
-                    ${EXTRA_ARGS}"
+                    ${EXTRA_ARGS} --host $DBVIP"
 else
     MYSQL_CMDLINE="mysql -nNE --connect-timeout=$TIMEOUT ${EXTRA_ARGS}"
 fi
